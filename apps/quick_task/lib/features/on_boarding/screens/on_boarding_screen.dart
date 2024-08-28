@@ -19,6 +19,9 @@ class OnBoardingScreen extends StatefulWidget {
 }
 
 class _OnBoardingScreenState extends State<OnBoardingScreen> with TickerProviderStateMixin {
+  static const double nextButtonSize = 50.0;
+  static const double nextRingSize = nextButtonSize + 10.0;
+
   @override
   void initState() {
     super.initState();
@@ -70,22 +73,22 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> with TickerProvider
                   alignment: Alignment.center,
                   children: [
                     SizedBox(
-                      width: 50,
-                      height: 50,
+                      width: nextRingSize,
+                      height: nextRingSize,
                       child: AnimatedBuilder(
                         animation: sl<OnBoardingBloc>().onBoardingTabsController.animation!,
                         builder: (BuildContext context, Widget? child) {
                           return LoadingIndicator(
-                            color: sl<Config>().theme!.customerColor,
-                            stroke: 2,
+                            color: sl<Config>().theme!.accentColor,
+                            stroke: 3,
                             value: (sl<OnBoardingBloc>().onBoardingTabsController.animation!.value + 1) / onBoardingData.length,
                           );
                         },
                       ),
                     ),
                     Container(
-                      height: 40,
-                      width: 40,
+                      height: nextButtonSize,
+                      width: nextButtonSize,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         gradient: LinearGradient(
@@ -97,9 +100,9 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> with TickerProvider
                         onPressed: () => sl<OnBoardingBloc>().add(GoToNextPage(
                           pagesLength: onBoardingData.length,
                         )),
-                        icon: const Icon(
+                        icon: Icon(
                           Icons.arrow_forward_ios,
-                          color: Colors.white,
+                          color: sl<Config>().theme!.white,
                         ),
                         iconSize: 17,
                       ),

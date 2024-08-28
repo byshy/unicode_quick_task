@@ -13,8 +13,8 @@ class OnBoardingItem extends StatelessWidget {
     required this.image,
     required this.title,
     required this.subTitle,
-    this.imageWidth = 200,
-    this.imageHeight = 200,
+    this.imageWidth = 250,
+    this.imageHeight = 250,
   });
 
   @override
