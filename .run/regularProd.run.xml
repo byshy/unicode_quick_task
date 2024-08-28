@@ -1,0 +1,8 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="regularProd" type="FlutterRunConfigurationType" factoryName="Flutter">
+    <option name="additionalArgs" value="--dart-define=&quot;flavor=regular_prod&quot;" />
+    <option name="buildFlavor" value="regularProd" />
+    <option name="filePath" value="$PROJECT_DIR$/apps/quick_task/lib/main.dart" />
+    <method v="2" />
+  </configuration>
+</component>
