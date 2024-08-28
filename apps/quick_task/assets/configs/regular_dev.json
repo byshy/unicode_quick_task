@@ -1,0 +1,8 @@
+{
+  "domain": "regular",
+  "theme": {
+    "customer_color": "#3A722E",
+    "customer_color_light": "#97B391",
+    "accent_color": "#3A722E"
+  }
+}

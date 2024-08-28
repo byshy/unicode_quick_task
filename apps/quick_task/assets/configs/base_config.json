@@ -1,0 +1,21 @@
+{
+  "theme": {
+    "is_dark_theme": true,
+    "customer_color": "#A15EB6",
+    "customer_color_light": "#CAA9D5",
+    "accent_color": "#3A722E",
+    "black": "#2C2D3C",
+    "white": "#FDFDFD",
+    "grey": "#585E6A",
+    "red": "#DB0000",
+    "orange": "#F2994A",
+    "yellow": "#F2C94C",
+    "green": "#219653",
+    "purple": "#9B51E0",
+    "brown": "#A17F4C",
+    "blue": "#2F80ED"
+  },
+  "workflow": {
+    "auto_sync": false
+  }
+}

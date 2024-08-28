@@ -1,0 +1,28 @@
+name: firebase_cluster
+description: A new Flutter package project.
+version: 0.0.1
+publish_to: none
+
+environment:
+  sdk: '>=3.0.1 <4.0.0'
+  flutter: ">=3.10.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  firebase_core: ^2.15.1
+  firebase_crashlytics: ^3.3.5
+  cloud_firestore: ^4.8.5
+  firebase_analytics: ^10.4.5
+
+  needle:
+    path: ../needle
+
+  picasso:
+    path: ../picasso
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^2.0.2

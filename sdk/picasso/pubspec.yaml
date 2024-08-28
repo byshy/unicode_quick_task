@@ -1,0 +1,41 @@
+name: picasso
+description: The UIKit of Unicode
+version: 0.0.1
+publish_to: none
+
+environment:
+  sdk: '>=3.0.1 <4.0.0'
+  flutter: ">=1.17.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  shimmer: ^3.0.0
+
+  flutter_svg: ^2.0.7
+  extended_image: ^8.1.0
+  image: ^4.0.17
+
+  keyboard_actions: ^4.1.0
+
+  local_storage:
+    path: ../local_storage
+
+  needle:
+    path: ../../sdk/needle
+
+  route_navigator:
+    path: ../route_navigator
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^2.0.2
+
+flutter:
+  uses-material-design: true
+
+flutter_intl:
+  enabled: true
+  class_name: PicassoL10n
