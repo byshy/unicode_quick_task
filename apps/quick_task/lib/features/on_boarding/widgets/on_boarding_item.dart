@@ -13,8 +13,8 @@ class OnBoardingItem extends StatelessWidget {
     required this.image,
     required this.title,
     required this.subTitle,
-    this.imageWidth = 360,
-    this.imageHeight = 360,
+    this.imageWidth = 200,
+    this.imageHeight = 200,
   });
 
   @override
@@ -24,9 +24,9 @@ class OnBoardingItem extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         title,
-        Expanded(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 48),
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 48),
+          child: ClipOval(
             child: FluxImage(
               image: image,
               height: imageHeight,
@@ -34,6 +34,7 @@ class OnBoardingItem extends StatelessWidget {
             ),
           ),
         ),
+        const Spacer(),
         subTitle,
       ],
     );

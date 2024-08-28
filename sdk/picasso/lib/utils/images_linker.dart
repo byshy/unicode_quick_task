@@ -12,6 +12,10 @@ class ImagesLinker {
   String? _basePath;
 
   String get logo => _assetGetter('app_logo.svg');
+  String get onBoarding1 => _assetGetter('on_boarding_1.png');
+  String get onBoarding2 => _assetGetter('on_boarding_2.png');
+  String get onBoarding3 => _assetGetter('on_boarding_3.png');
+  String get onBoarding4 => _assetGetter('on_boarding_4.png');
 
   void init(String path) {
     _basePath = path;
