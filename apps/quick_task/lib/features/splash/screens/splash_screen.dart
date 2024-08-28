@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:picasso/utils/images_linker.dart';
 import 'package:picasso/widgets/common/flux_image.dart';
+import 'package:quick_task/features/splash/bloc/splash_bloc.dart';
+
+import '../../../di/injection_container.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -10,6 +13,13 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  @override
+  void initState() {
+    super.initState();
+
+    sl<SplashBloc>().add(const SplashScreenMounted());
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
