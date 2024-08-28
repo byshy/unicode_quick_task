@@ -27,9 +27,11 @@ class OnBoardingBloc extends Bloc<OnBoardingEvent, OnBoardingState> {
         curve: Curves.ease,
       );
     } else {
-      sl<LocalDataSource>().setFirstLaunch(false);
+      try {
+        sl<LocalDataSource>().setFirstLaunch(false);
 
-      sl<RouteNavigator>().pushReplacementScreen(Screens.home);
+        sl<RouteNavigator>().pushReplacementScreen(Screens.home);
+      } catch (_) {}
     }
   }
 }
