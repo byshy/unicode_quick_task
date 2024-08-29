@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:picasso/models/extensions.dart';
+import 'package:picasso/utils/gradients.dart';
 
 class GeneralButton extends StatelessWidget {
   final VoidCallback? onPressed;
@@ -45,6 +46,11 @@ class GeneralButton extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           borderRadius: mRadius,
+          gradient: LinearGradient(
+            begin: gradientBegin,
+            end: gradientEnd,
+            colors: Gradients.customer,
+          ),
         ),
         child: Material(
           type: MaterialType.transparency,
