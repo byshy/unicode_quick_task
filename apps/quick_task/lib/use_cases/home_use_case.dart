@@ -58,6 +58,30 @@ class HomeUseCase {
     }
   }
 
+  Either<Failure, List<Todo>> deleteTodo({
+    required List<Todo> todosList,
+    required Todo todo,
+  }) {
+    try {
+      int indexOfOldTODO = todosList.indexWhere((e) => e.id == todo.id);
+
+      List<Todo> updatedTodosList = List.of(todosList);
+
+      updatedTodosList.removeAt(indexOfOldTODO);
+
+      sl<HomeRepo>().saveTodo(todos: updatedTodosList);
+
+      return Right(updatedTodosList);
+    } catch (e) {
+      return Left(
+        UnknownFailure(
+          messageData: 'Unable to update the selected TODO',
+          data: e,
+        ),
+      );
+    }
+  }
+
   void resetTODOFields() {
     sl<HomeBloc>().todoTitleController.clear();
     sl<HomeBloc>().todoDescriptionController.clear();

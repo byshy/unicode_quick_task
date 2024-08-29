@@ -36,3 +36,16 @@ class TODOUpdated extends HomeEvent {
         todo,
       ];
 }
+
+class TODODeleted extends HomeEvent {
+  final Todo todo;
+
+  const TODODeleted({
+    required this.todo,
+  });
+
+  @override
+  List<Object> get props => [
+    todo,
+  ];
+}

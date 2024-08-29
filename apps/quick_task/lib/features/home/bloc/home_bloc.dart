@@ -22,6 +22,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<TODOLoaded>(_onTODOLoaded);
     on<TODOAdded>(_onTODOAdded);
     on<TODOUpdated>(_onTODOUpdated);
+    on<TODODeleted>(_onTODODeleted);
 
     add(const TODOLoaded());
   }
@@ -67,5 +68,19 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     );
 
     sl<HomeUseCase>().resetTODOFields();
+  }
+
+  void _onTODODeleted(TODODeleted event, Emitter<HomeState> emit) {
+    Either<Failure, List<Todo>> result = sl<HomeUseCase>().deleteTodo(
+      todosList: state.todosList,
+      todo: event.todo,
+    );
+
+    result.fold(
+      (failure) {},
+      (newTodosList) {
+        emit(state.copyWith(todosList: newTodosList));
+      },
+    );
   }
 }
