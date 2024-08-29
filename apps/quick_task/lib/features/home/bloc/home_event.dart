@@ -7,6 +7,10 @@ class HomeEvent extends Equatable {
   List<Object> get props => [];
 }
 
+class TODOLoaded extends HomeEvent {
+  const TODOLoaded();
+}
+
 class TODOAdded extends HomeEvent {
   final Todo todo;
 

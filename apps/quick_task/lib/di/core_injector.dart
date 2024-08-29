@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/services.dart';
+import 'package:local_storage/exports.dart';
+import 'package:local_storage/hive_wrapper.dart';
 import 'package:monitoring/tracker.dart';
 import 'package:needle/needle.dart';
 import 'package:picasso/models/config.dart';
@@ -13,6 +15,14 @@ Future<void> init(GetIt instance) async {
   instance.registerLazySingleton<RouteNavigator>(() => RouteNavigator());
   instance.registerLazySingleton<Connectivity>(() => Connectivity());
   instance.registerLazySingleton<Tracker>(() => Tracker(TrackersImplementation()));
+
+  String quickTaskHiveBoxName = 'quick_task_box';
+
+  await initHiveUnicode();
+
+  Box quickTaskBox = await HiveWrapper.openBox(quickTaskHiveBoxName);
+
+  instance.registerLazySingleton<Box>(() => quickTaskBox);
 
   Config config = await configInitializer();
 
