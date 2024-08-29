@@ -19,3 +19,7 @@ class CoreLanguageChanged extends CoreEvent {
         language,
       ];
 }
+
+class DeviceIDFetched extends CoreEvent {
+  const DeviceIDFetched();
+}

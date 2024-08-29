@@ -14,6 +14,7 @@ import '../../generated/l10n.dart';
 import '../models/failures/failure.dart';
 
 part 'core_event.dart';
+
 part 'core_state.dart';
 
 class CoreBloc extends Bloc<CoreEvent, CoreState> {
@@ -24,10 +25,13 @@ class CoreBloc extends Bloc<CoreEvent, CoreState> {
       packageInfo = value;
     });
 
-    on<CoreLanguageChanged>(_changeLanguage);
+    on<CoreLanguageChanged>(_onLanguageChanged);
+    on<DeviceIDFetched>(_onDeviceIDFetched);
+
+    add(const DeviceIDFetched());
   }
 
-  Future<void> _changeLanguage(CoreLanguageChanged event, Emitter<CoreState> emit) async {
+  Future<void> _onLanguageChanged(CoreLanguageChanged event, Emitter<CoreState> emit) async {
     await getLanguage();
 
     sl<LocalDataSource>().setLanguage(event.language);
@@ -36,6 +40,21 @@ class CoreBloc extends Bloc<CoreEvent, CoreState> {
       state.copyWith(
         lang: event.language,
       ),
+    );
+  }
+
+  Future<void> _onDeviceIDFetched(DeviceIDFetched event, Emitter<CoreState> emit) async {
+    Either<Failure, String?> result = await sl<CoreUseCase>().getDeviceID();
+
+    result.fold(
+      (failure) {},
+      (deviceID) {
+        emit(
+          state.copyWith(
+            deviceID: deviceID,
+          ),
+        );
+      },
     );
   }
 
