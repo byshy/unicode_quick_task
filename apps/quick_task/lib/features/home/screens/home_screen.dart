@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:quick_task/core/enums/sync.dart';
 import 'package:quick_task/features/home/bottom_sheets/todo_bottom_sheet.dart';
+import 'package:quick_task/features/home/widgets/todo_item.dart';
 import 'package:quick_task/generated/l10n.dart';
+import 'package:quick_task/models/todo.dart';
 
 import '../bloc/home_bloc.dart';
 
@@ -25,6 +27,17 @@ class HomeScreen extends StatelessWidget {
                 icon: Icon(state.syncStatus.isSynced ? Icons.cloud_done_rounded : Icons.cloud_upload),
               ),
             ],
+          ),
+          body: ListView.separated(
+            itemCount: state.todosList.length,
+            itemBuilder: (_, index) {
+              final Todo todo = state.todosList[index];
+
+              return TodoItem(
+                todo: todo,
+              );
+            },
+            separatorBuilder: (_, index) => const SizedBox(height: 8),
           ),
           floatingActionButton: const FloatingActionButton(
             onPressed: showTodoBottomSheet,
