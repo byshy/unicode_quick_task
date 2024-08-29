@@ -31,7 +31,7 @@ class HomeUseCase {
     required Todo todo,
   }) {
     try {
-      int indexOfOldTODO = todosList.indexOf(todo);
+      int indexOfOldTODO = todosList.indexWhere((e) => e.id == todo.id);
 
       List<Todo> updatedTodosList = List.of(todosList);
 
