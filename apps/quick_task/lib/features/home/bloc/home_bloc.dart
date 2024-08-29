@@ -20,6 +20,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
   HomeBloc() : super(const HomeState()) {
     on<FirstTimeTODOLoaded>(_onFirstTimeTODOLoaded);
+    on<SyncTODOsWithRemote>(_onSyncTODOsWithRemote);
     on<TODOLoaded>(_onTODOLoaded);
     on<TODOAdded>(_onTODOAdded);
     on<TODOUpdated>(_onTODOUpdated);
@@ -39,6 +40,10 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     );
   }
 
+  Future<void> _onSyncTODOsWithRemote(SyncTODOsWithRemote event, Emitter<HomeState> emit) async {
+    await sl<HomeUseCase>().syncTODOsWithRemote();
+  }
+
   void _onTODOLoaded(TODOLoaded event, Emitter<HomeState> emit) {
     Either<Failure, List<Todo>> result = sl<HomeUseCase>().loadTodos();
 
@@ -50,8 +55,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     );
   }
 
-  void _onTODOAdded(TODOAdded event, Emitter<HomeState> emit) {
-    Either<Failure, List<Todo>> result = sl<HomeUseCase>().addTodo(
+  Future<void> _onTODOAdded(TODOAdded event, Emitter<HomeState> emit) async {
+    Either<Failure, List<Todo>> result = await sl<HomeUseCase>().addTodo(
       todosList: state.todosList,
       todo: event.todo,
     );
@@ -66,8 +71,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     sl<HomeUseCase>().resetTODOFields();
   }
 
-  void _onTODOUpdated(TODOUpdated event, Emitter<HomeState> emit) {
-    Either<Failure, List<Todo>> result = sl<HomeUseCase>().updateTodo(
+  Future<void> _onTODOUpdated(TODOUpdated event, Emitter<HomeState> emit) async {
+    Either<Failure, List<Todo>> result = await sl<HomeUseCase>().updateTodo(
       todosList: state.todosList,
       todo: event.todo,
     );
@@ -82,8 +87,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     sl<HomeUseCase>().resetTODOFields();
   }
 
-  void _onTODODeleted(TODODeleted event, Emitter<HomeState> emit) {
-    Either<Failure, List<Todo>> result = sl<HomeUseCase>().deleteTodo(
+  Future<void> _onTODODeleted(TODODeleted event, Emitter<HomeState> emit) async {
+    Either<Failure, List<Todo>> result = await sl<HomeUseCase>().deleteTodo(
       todosList: state.todosList,
       todo: event.todo,
     );

@@ -11,14 +11,18 @@ class HomeUseCase {
     return await sl<HomeRepo>().getTODOsFromFirebase();
   }
 
+  Future<void> syncTODOsWithRemote() async {
+    await sl<HomeRepo>().syncTODOsWithRemote();
+  }
+
   Either<Failure, List<Todo>> loadTodos() {
     return sl<HomeRepo>().loadTodos();
   }
 
-  Either<Failure, List<Todo>> addTodo({
+  Future<Either<Failure, List<Todo>>> addTodo({
     required List<Todo> todosList,
     required Todo todo,
-  }) {
+  }) async {
     try {
       List<Todo> updatedTodosList = List.of(todosList);
 
@@ -26,7 +30,7 @@ class HomeUseCase {
 
       sl<HomeRepo>().saveTodo(todos: updatedTodosList);
 
-      sl<HomeRepo>().addTODOToFirebase(todo: todo);
+      await sl<HomeRepo>().addTODOToFirebase(todo: todo);
 
       return Right(updatedTodosList);
     } catch (e) {
@@ -39,10 +43,10 @@ class HomeUseCase {
     }
   }
 
-  Either<Failure, List<Todo>> updateTodo({
+  Future<Either<Failure, List<Todo>>> updateTodo({
     required List<Todo> todosList,
     required Todo todo,
-  }) {
+  }) async {
     try {
       int indexOfOldTODO = todosList.indexWhere((e) => e.id == todo.id);
 
@@ -53,7 +57,7 @@ class HomeUseCase {
 
       sl<HomeRepo>().saveTodo(todos: updatedTodosList);
 
-      sl<HomeRepo>().addTODOToFirebase(todo: todo);
+      await sl<HomeRepo>().addTODOToFirebase(todo: todo);
 
       return Right(updatedTodosList);
     } catch (e) {
@@ -66,10 +70,10 @@ class HomeUseCase {
     }
   }
 
-  Either<Failure, List<Todo>> deleteTodo({
+  Future<Either<Failure, List<Todo>>> deleteTodo({
     required List<Todo> todosList,
     required Todo todo,
-  }) {
+  }) async {
     try {
       int indexOfOldTODO = todosList.indexWhere((e) => e.id == todo.id);
 
@@ -79,7 +83,7 @@ class HomeUseCase {
 
       sl<HomeRepo>().saveTodo(todos: updatedTodosList);
 
-      sl<HomeRepo>().deleteTODOToFirebase(todo: todo);
+      await sl<HomeRepo>().deleteTODOToFirebase(todo: todo);
 
       return Right(updatedTodosList);
     } catch (e) {

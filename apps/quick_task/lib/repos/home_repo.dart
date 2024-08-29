@@ -1,8 +1,10 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dartz/dartz.dart';
 import 'package:firebase_cluster/exports.dart';
 import 'package:firebase_cluster/firestore_service.dart';
 import 'package:local_storage/exports.dart';
 import 'package:quick_task/core/bloc/core_bloc.dart';
+import 'package:quick_task/core/helpers/connectivity.dart';
 
 import '../core/enums/hive_data_id.dart';
 import '../core/models/failures/failure.dart';
@@ -32,6 +34,42 @@ class HomeRepo {
           data: e,
         ),
       );
+    }
+  }
+
+  Future<void> syncTODOsWithRemote() async {
+    Either<Failure, List<Todo>> localTodosResult = loadTodos();
+    Either<Failure, List<Todo>> remoteTodosResult = await getTODOsFromFirebase();
+
+    if (localTodosResult.isRight() && remoteTodosResult.isRight()) {
+      List<Todo> localTodos = (localTodosResult as Right).value;
+      List<Todo> remoteTodos = (remoteTodosResult as Right).value;
+
+      List<String> updatedRemoteTodos = [];
+
+      for (Todo remoteTodo in remoteTodos) {
+        Todo? matchingTodo;
+
+        try {
+          matchingTodo = localTodos.firstWhere((todo) => todo.id == remoteTodo.id);
+        } catch (_) {}
+
+        if (matchingTodo == null) {
+          await deleteTODOToFirebase(todo: remoteTodo);
+        } else {
+          if (remoteTodo != matchingTodo) {
+            await addTODOToFirebase(todo: matchingTodo);
+          }
+        }
+
+        updatedRemoteTodos.add(remoteTodo.id);
+      }
+
+      localTodos.removeWhere((todo) => updatedRemoteTodos.contains(todo.id));
+
+      for (Todo localTodo in localTodos) {
+        await addTODOToFirebase(todo: localTodo);
+      }
     }
   }
 
@@ -77,17 +115,25 @@ class HomeRepo {
     }
   }
 
-  void addTODOToFirebase({required Todo todo}) {
-    sl<FireStoreService>()
-        .db
-        .collection('users')
-        .doc(sl<CoreBloc>().state.deviceID)
-        .collection('todos')
-        .doc(todo.id)
-        .set(todo.toJson());
+  Future<void> addTODOToFirebase({required Todo todo}) async {
+    bool isConnected = (await Connectivity().checkConnectivity()).isConnected();
+
+    if (isConnected) {
+      sl<FireStoreService>()
+          .db
+          .collection('users')
+          .doc(sl<CoreBloc>().state.deviceID)
+          .collection('todos')
+          .doc(todo.id)
+          .set(todo.toJson());
+    }
   }
 
-  void deleteTODOToFirebase({required Todo todo}) {
-    sl<FireStoreService>().db.collection('users').doc(sl<CoreBloc>().state.deviceID).collection('todos').doc(todo.id).delete();
+  Future<void> deleteTODOToFirebase({required Todo todo}) async {
+    bool isConnected = (await Connectivity().checkConnectivity()).isConnected();
+
+    if (isConnected) {
+      sl<FireStoreService>().db.collection('users').doc(sl<CoreBloc>().state.deviceID).collection('todos').doc(todo.id).delete();
+    }
   }
 }

@@ -11,6 +11,10 @@ class FirstTimeTODOLoaded extends HomeEvent {
   const FirstTimeTODOLoaded();
 }
 
+class SyncTODOsWithRemote extends HomeEvent {
+  const SyncTODOsWithRemote();
+}
+
 class TODOLoaded extends HomeEvent {
   const TODOLoaded();
 }
