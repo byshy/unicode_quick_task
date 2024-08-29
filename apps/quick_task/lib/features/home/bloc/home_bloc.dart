@@ -19,12 +19,24 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final TextEditingController todoDescriptionController = TextEditingController();
 
   HomeBloc() : super(const HomeState()) {
+    on<FirstTimeTODOLoaded>(_onFirstTimeTODOLoaded);
     on<TODOLoaded>(_onTODOLoaded);
     on<TODOAdded>(_onTODOAdded);
     on<TODOUpdated>(_onTODOUpdated);
     on<TODODeleted>(_onTODODeleted);
 
     add(const TODOLoaded());
+  }
+
+  Future<void> _onFirstTimeTODOLoaded(FirstTimeTODOLoaded event, Emitter<HomeState> emit) async {
+    Either<Failure, List<Todo>> result = await sl<HomeUseCase>().getTODOsFromFirebase();
+
+    result.fold(
+      (failure) {},
+      (newTodosList) {
+        emit(state.copyWith(todosList: newTodosList));
+      },
+    );
   }
 
   void _onTODOLoaded(TODOLoaded event, Emitter<HomeState> emit) {

@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:firebase_cluster/exports.dart';
 import 'package:firebase_cluster/firestore_service.dart';
 import 'package:local_storage/exports.dart';
 import 'package:quick_task/core/bloc/core_bloc.dart';
@@ -54,6 +55,28 @@ class HomeRepo {
     }
   }
 
+  Future<Either<Failure, List<Todo>>> getTODOsFromFirebase() async {
+    try {
+      QuerySnapshot snapshot =
+          await sl<FireStoreService>().db.collection('users').doc(sl<CoreBloc>().state.deviceID).collection('todos').get();
+
+      List<Todo> remoteTodos = [];
+
+      for (QueryDocumentSnapshot item in snapshot.docs) {
+        remoteTodos.add(Todo.fromJson(item.data() as Map<String, dynamic>));
+      }
+
+      saveTodo(todos: remoteTodos);
+
+      return Right(remoteTodos);
+    } catch (e) {
+      return Left(UnknownFailure(
+        messageData: 'Unable to load the TODOs from server',
+        data: e,
+      ));
+    }
+  }
+
   void addTODOToFirebase({required Todo todo}) {
     sl<FireStoreService>()
         .db
@@ -65,12 +88,6 @@ class HomeRepo {
   }
 
   void deleteTODOToFirebase({required Todo todo}) {
-    sl<FireStoreService>()
-        .db
-        .collection('users')
-        .doc(sl<CoreBloc>().state.deviceID)
-        .collection('todos')
-        .doc(todo.id)
-        .delete();
+    sl<FireStoreService>().db.collection('users').doc(sl<CoreBloc>().state.deviceID).collection('todos').doc(todo.id).delete();
   }
 }

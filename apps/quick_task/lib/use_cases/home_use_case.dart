@@ -7,6 +7,10 @@ import 'package:quick_task/repos/home_repo.dart';
 import '../di/injection_container.dart';
 
 class HomeUseCase {
+  Future<Either<Failure, List<Todo>>> getTODOsFromFirebase() async {
+    return await sl<HomeRepo>().getTODOsFromFirebase();
+  }
+
   Either<Failure, List<Todo>> loadTodos() {
     return sl<HomeRepo>().loadTodos();
   }

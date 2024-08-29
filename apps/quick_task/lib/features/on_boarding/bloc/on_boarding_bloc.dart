@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:quick_task/features/home/bloc/home_bloc.dart';
 import 'package:route_navigator/route_navigator.dart';
 
 import '../../../core/enums/base_status.dart';
@@ -17,6 +18,15 @@ class OnBoardingBloc extends Bloc<OnBoardingEvent, OnBoardingState> {
 
   OnBoardingBloc() : super(const OnBoardingState()) {
     on<GoToNextPage>(_onGoToNextPage);
+
+    Future.delayed(
+      const Duration(milliseconds: 500),
+      () {
+        if (sl<LocalDataSource>().getFirstLaunch()) {
+          sl<HomeBloc>().add(const FirstTimeTODOLoaded());
+        }
+      },
+    );
   }
 
   Future<void> _onGoToNextPage(GoToNextPage event, Emitter<OnBoardingState> emit) async {
