@@ -19,8 +19,22 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final TextEditingController todoDescriptionController = TextEditingController();
 
   HomeBloc() : super(const HomeState()) {
+    on<TODOLoaded>(_onTODOLoaded);
     on<TODOAdded>(_onTODOAdded);
     on<TODOUpdated>(_onTODOUpdated);
+
+    add(const TODOLoaded());
+  }
+
+  void _onTODOLoaded(TODOLoaded event, Emitter<HomeState> emit) {
+    Either<Failure, List<Todo>> result = sl<HomeUseCase>().loadTodos();
+
+    result.fold(
+      (failure) {},
+      (newTodosList) {
+        emit(state.copyWith(todosList: newTodosList));
+      },
+    );
   }
 
   void _onTODOAdded(TODOAdded event, Emitter<HomeState> emit) {

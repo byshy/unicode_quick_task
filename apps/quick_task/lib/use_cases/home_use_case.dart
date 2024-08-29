@@ -2,10 +2,15 @@ import 'package:dartz/dartz.dart';
 import 'package:quick_task/core/models/failures/failure.dart';
 import 'package:quick_task/features/home/bloc/home_bloc.dart';
 import 'package:quick_task/models/todo.dart';
+import 'package:quick_task/repos/home_repo.dart';
 
 import '../di/injection_container.dart';
 
 class HomeUseCase {
+  Either<Failure, List<Todo>> loadTodos() {
+    return sl<HomeRepo>().loadTodos();
+  }
+
   Either<Failure, List<Todo>> addTodo({
     required List<Todo> todosList,
     required Todo todo,
