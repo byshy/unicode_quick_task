@@ -52,4 +52,6 @@ class Todo extends Equatable {
     description,
     completion,
   ];
+
+  bool get hasDescription => description?.isNotEmpty ?? false;
 }
