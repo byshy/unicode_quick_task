@@ -45,7 +45,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   }
 
   void _onTODOLoaded(TODOLoaded event, Emitter<HomeState> emit) {
-    Either<Failure, List<Todo>> result = sl<HomeUseCase>().loadTodos();
+    Either<Failure, List<Todo>> result = sl<HomeUseCase>().getTODOsFromLocal();
 
     result.fold(
       (failure) {},

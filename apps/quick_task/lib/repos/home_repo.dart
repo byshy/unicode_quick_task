@@ -12,7 +12,7 @@ import '../di/injection_container.dart';
 import '../models/todo.dart';
 
 class HomeRepo {
-  Either<Failure, List<Todo>> loadTodos() {
+  Either<Failure, List<Todo>> getTODOsFromLocal() {
     try {
       List<Todo> todosList = [];
 
@@ -34,42 +34,6 @@ class HomeRepo {
           data: e,
         ),
       );
-    }
-  }
-
-  Future<void> syncTODOsWithRemote() async {
-    Either<Failure, List<Todo>> localTodosResult = loadTodos();
-    Either<Failure, List<Todo>> remoteTodosResult = await getTODOsFromFirebase();
-
-    if (localTodosResult.isRight() && remoteTodosResult.isRight()) {
-      List<Todo> localTodos = (localTodosResult as Right).value;
-      List<Todo> remoteTodos = (remoteTodosResult as Right).value;
-
-      List<String> updatedRemoteTodos = [];
-
-      for (Todo remoteTodo in remoteTodos) {
-        Todo? matchingTodo;
-
-        try {
-          matchingTodo = localTodos.firstWhere((todo) => todo.id == remoteTodo.id);
-        } catch (_) {}
-
-        if (matchingTodo == null) {
-          await deleteTODOToFirebase(todo: remoteTodo);
-        } else {
-          if (remoteTodo != matchingTodo) {
-            await addTODOToFirebase(todo: matchingTodo);
-          }
-        }
-
-        updatedRemoteTodos.add(remoteTodo.id);
-      }
-
-      localTodos.removeWhere((todo) => updatedRemoteTodos.contains(todo.id));
-
-      for (Todo localTodo in localTodos) {
-        await addTODOToFirebase(todo: localTodo);
-      }
     }
   }
 
