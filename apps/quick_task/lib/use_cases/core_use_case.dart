@@ -1,5 +1,7 @@
-import 'package:app_set_id/app_set_id.dart';
+import 'dart:io';
+
 import 'package:dartz/dartz.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:localization/enums/lang.dart';
 
 import '../core/helpers/language_getter.dart';
@@ -16,7 +18,19 @@ class CoreUseCase {
 
   Future<Either<Failure, String?>> getDeviceID() async {
     try {
-      return Right(await AppSetId().getIdentifier());
+      String uniqueDeviceId = '';
+
+      DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+
+      if (Platform.isAndroid) {
+        AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
+        uniqueDeviceId = androidInfo.id;
+      } else if (Platform.isIOS) {
+        IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
+        uniqueDeviceId = iosInfo.identifierForVendor ?? '';
+      }
+
+      return Right(uniqueDeviceId);
     } catch (e) {
       return Left(UnknownFailure(data: e));
     }

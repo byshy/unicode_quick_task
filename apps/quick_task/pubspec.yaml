@@ -18,7 +18,7 @@ dependencies:
   equatable: ^2.0.5
 
   connectivity_plus: ^4.0.1
-  app_set_id: ^1.2.0
+  device_info_plus: ^10.1.2
 
   firebase_cluster:
     path: ../../sdk/firebase_cluster

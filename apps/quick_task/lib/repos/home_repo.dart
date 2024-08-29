@@ -1,5 +1,7 @@
 import 'package:dartz/dartz.dart';
+import 'package:firebase_cluster/firestore_service.dart';
 import 'package:local_storage/exports.dart';
+import 'package:quick_task/core/bloc/core_bloc.dart';
 
 import '../core/enums/hive_data_id.dart';
 import '../core/models/failures/failure.dart';
@@ -50,5 +52,15 @@ class HomeRepo {
         ),
       );
     }
+  }
+
+  void addTODOToFirebase({required Todo todo}) {
+    sl<FireStoreService>()
+        .db
+        .collection('users')
+        .doc(sl<CoreBloc>().state.deviceID)
+        .collection('todos')
+        .doc(todo.id)
+        .set(todo.toJson());
   }
 }
