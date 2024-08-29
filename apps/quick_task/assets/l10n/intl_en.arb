@@ -1,6 +1,8 @@
 {
   "@@locale": "en",
   "home": "Home",
+  "sync": "sync",
+  "synced": "synced",
   "on_boarding_1": "Stay Organized with Ease",
   "on_boarding_1_subtitle": "Create, manage, and prioritize your tasks with just a few taps.",
   "on_boarding_2": "Never Miss a Deadline",
