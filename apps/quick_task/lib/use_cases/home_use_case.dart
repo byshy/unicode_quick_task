@@ -20,6 +20,8 @@ class HomeUseCase {
 
       updatedTodosList.add(todo);
 
+      sl<HomeRepo>().saveTodo(todos: updatedTodosList);
+
       return Right(updatedTodosList);
     } catch (e) {
       return Left(
@@ -42,6 +44,8 @@ class HomeUseCase {
 
       updatedTodosList.removeAt(indexOfOldTODO);
       updatedTodosList.insert(indexOfOldTODO, todo);
+
+      sl<HomeRepo>().saveTodo(todos: updatedTodosList);
 
       return Right(updatedTodosList);
     } catch (e) {

@@ -31,4 +31,24 @@ class HomeRepo {
       );
     }
   }
+
+  Either<Failure, void> saveTodo({required List<Todo> todos}) {
+    try {
+      sl<Box>().put(
+        HiveDataID.todos,
+        {
+          'data': todos.map((e) => e.toJson()).toList(),
+        },
+      );
+
+      return const Right(null);
+    } catch (e) {
+      return Left(
+        UnknownFailure(
+          messageData: 'Unable to save TODOs',
+          data: e,
+        ),
+      );
+    }
+  }
 }
