@@ -63,4 +63,14 @@ class HomeRepo {
         .doc(todo.id)
         .set(todo.toJson());
   }
+
+  void deleteTODOToFirebase({required Todo todo}) {
+    sl<FireStoreService>()
+        .db
+        .collection('users')
+        .doc(sl<CoreBloc>().state.deviceID)
+        .collection('todos')
+        .doc(todo.id)
+        .delete();
+  }
 }

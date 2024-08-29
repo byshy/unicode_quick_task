@@ -49,6 +49,8 @@ class HomeUseCase {
 
       sl<HomeRepo>().saveTodo(todos: updatedTodosList);
 
+      sl<HomeRepo>().addTODOToFirebase(todo: todo);
+
       return Right(updatedTodosList);
     } catch (e) {
       return Left(
@@ -72,6 +74,8 @@ class HomeUseCase {
       updatedTodosList.removeAt(indexOfOldTODO);
 
       sl<HomeRepo>().saveTodo(todos: updatedTodosList);
+
+      sl<HomeRepo>().deleteTODOToFirebase(todo: todo);
 
       return Right(updatedTodosList);
     } catch (e) {
