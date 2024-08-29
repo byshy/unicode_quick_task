@@ -1,31 +1,77 @@
 import 'package:flutter/material.dart';
+import 'package:picasso/models/text_styles.dart';
 import 'package:picasso/widgets/bottom_sheets/flat_bottom_sheet/show_flat_bottom_sheet.dart';
 import 'package:picasso/widgets/common/picasso_button.dart';
 import 'package:picasso/widgets/common/picasso_text_field.dart';
+import 'package:quick_task/features/home/bloc/home_bloc.dart';
 import 'package:quick_task/generated/l10n.dart';
 import 'package:quick_task/models/todo.dart';
+import 'package:route_navigator/route_navigator.dart';
+
+import '../../../di/injection_container.dart';
 
 Future<void> showTodoBottomSheet({Todo? todo}) async {
+  bool isNewTODO = todo == null;
+
+  if (!isNewTODO) {
+    sl<HomeBloc>().todoTitleController.text = todo.title;
+    sl<HomeBloc>().todoDescriptionController.text = todo.description ?? '';
+  }
+
   await showFlatBottomSheet(
     child: SafeArea(
       minimum: const EdgeInsets.fromLTRB(16, 0, 16, 16),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
+          Text(
+            isNewTODO ? QuickTaskL10n.current.add_todo : QuickTaskL10n.current.edit_todo,
+            style: HeadingStyle.titleNormal,
+          ),
+          const SizedBox(height: 8),
           PicassoTextField(
+            controller: sl<HomeBloc>().todoTitleController,
             title: QuickTaskL10n.current.title,
             hint: QuickTaskL10n.current.title,
           ),
           const SizedBox(height: 8),
           PicassoTextField(
+            controller: sl<HomeBloc>().todoDescriptionController,
             title: QuickTaskL10n.current.description,
             hint: QuickTaskL10n.current.description,
             maxLines: null,
           ),
           const SizedBox(height: 8),
           PicassoButton(
-            onPressed: () {},
+            onPressed: () async {
+              await sl<RouteNavigator>().pop();
+
+              String title = sl<HomeBloc>().todoTitleController.text;
+              String description = sl<HomeBloc>().todoDescriptionController.text;
+
+              if (isNewTODO) {
+                sl<HomeBloc>().add(
+                  TODOAdded(
+                    todo: Todo(
+                      id: '${DateTime.now().millisecondsSinceEpoch}',
+                      title: title,
+                      description: description,
+                    ),
+                  ),
+                );
+              } else {
+                sl<HomeBloc>().add(
+                  TODOUpdated(
+                    todo: todo.copyWith(
+                      title: title,
+                      description: description,
+                    ),
+                  ),
+                );
+              }
+            },
             child: Text(
-              todo == null ? QuickTaskL10n.current.add : QuickTaskL10n.current.edit,
+              isNewTODO ? QuickTaskL10n.current.add : QuickTaskL10n.current.edit,
             ),
           ),
         ],
