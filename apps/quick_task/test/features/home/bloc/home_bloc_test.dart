@@ -139,7 +139,7 @@ void main() {
     blocTest<HomeBloc, HomeState>(
       'calls syncTODOsWithRemote when SyncTODOsWithRemote is added',
       build: () {
-        when(mockHomeUseCase.syncTODOsWithRemote()).thenAnswer((_) async => Future.value());
+        when(mockHomeUseCase.syncTODOsWithRemote()).thenAnswer((_) async => const Right(null));
         return homeBloc;
       },
       act: (bloc) => bloc.add(const SyncTODOsWithRemote()),
