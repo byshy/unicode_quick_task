@@ -5,8 +5,8 @@ import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:localization/enums/lang.dart';
+import 'package:quick_task/core/helpers/is_test_env.dart';
 import 'package:quick_task/use_cases/core_use_case.dart';
-import 'package:unicode/unicode.dart';
 
 import '../../di/injection_container.dart';
 import '../../generated/l10n.dart';
@@ -17,19 +17,15 @@ part 'core_event.dart';
 part 'core_state.dart';
 
 class CoreBloc extends Bloc<CoreEvent, CoreState> {
-  late PackageInfo packageInfo;
-
   CoreBloc() : super(const CoreState()) {
-    PackageInfo.fromPlatform().then((value) {
-      packageInfo = value;
-    });
-
     on<CoreLanguageInitialized>(_onCoreLanguageInitialized);
     on<CoreLanguageChanged>(_onLanguageChanged);
     on<DeviceIDFetched>(_onDeviceIDFetched);
 
-    add(const CoreLanguageInitialized());
-    add(const DeviceIDFetched());
+    if (!isRunningInTest) {
+      add(const CoreLanguageInitialized());
+      add(const DeviceIDFetched());
+    }
   }
 
   Future<void> _onCoreLanguageInitialized(CoreLanguageInitialized event, Emitter<CoreState> emit) async {
