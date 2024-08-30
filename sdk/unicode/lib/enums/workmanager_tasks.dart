@@ -1,5 +1,5 @@
 enum BGTask {
-  heartBeatBG(
+  syncTODOs(
     'com.unicode.bg_sync_todos',
     'BGSyncTODOs',
   );

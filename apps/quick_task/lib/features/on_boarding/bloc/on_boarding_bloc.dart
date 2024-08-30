@@ -18,15 +18,6 @@ class OnBoardingBloc extends Bloc<OnBoardingEvent, OnBoardingState> {
 
   OnBoardingBloc() : super(const OnBoardingState()) {
     on<GoToNextPage>(_onGoToNextPage);
-
-    Future.delayed(
-      const Duration(milliseconds: 500),
-      () {
-        if (sl<LocalDataSource>().getFirstLaunch()) {
-          sl<HomeBloc>().add(const FirstTimeTODOLoaded());
-        }
-      },
-    );
   }
 
   Future<void> _onGoToNextPage(GoToNextPage event, Emitter<OnBoardingState> emit) async {
@@ -38,6 +29,8 @@ class OnBoardingBloc extends Bloc<OnBoardingEvent, OnBoardingState> {
       );
     } else {
       try {
+        sl<HomeBloc>().add(const FirstTimeTODOLoaded());
+
         sl<LocalDataSource>().setFirstLaunch(false);
 
         sl<RouteNavigator>().pushReplacementScreen(Screens.home);

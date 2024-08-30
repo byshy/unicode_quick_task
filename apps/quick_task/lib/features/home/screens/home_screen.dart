@@ -10,12 +10,30 @@ import 'package:quick_task/features/home/widgets/todo_item.dart';
 import 'package:quick_task/generated/l10n.dart';
 import 'package:quick_task/models/todo.dart';
 import 'package:route_navigator/route_navigator.dart';
+import 'package:unicode/enums/workmanager_tasks.dart';
+import 'package:unicode/helpers/wm_task_register.dart';
+import 'package:unicode/unicode.dart';
 
 import '../../../di/injection_container.dart';
 import '../bloc/home_bloc.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  @override
+  void initState() {
+    super.initState();
+
+    Workmanager().registerTask(
+      BGTask.syncTODOs.uniqueName,
+      BGTask.syncTODOs.taskName,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {

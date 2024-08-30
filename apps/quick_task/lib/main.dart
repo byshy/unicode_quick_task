@@ -10,6 +10,7 @@ import 'package:picasso/models/config.dart';
 import 'package:picasso/models/text_styles.dart';
 import 'package:picasso/utils/fonts.dart';
 import 'package:picasso/utils/material_color.dart';
+import 'package:quick_task/features/home/bloc/home_bloc.dart';
 import 'package:quick_task/generated/l10n.dart';
 import 'package:quick_task/utils/routing/screens.dart';
 import 'package:route_navigator/navigation_observer.dart';
@@ -53,15 +54,17 @@ void callbackDispatcher() async {
   Workmanager().executeTask((task, inputData) async {
     bool runResult = false;
 
-    if (task == BGTask.heartBeatBG.taskName) {
-      // TODO: sync the TODOs to firebase
+    if (task == BGTask.syncTODOs.taskName) {
+      sl<HomeBloc>().add(const SyncTODOsWithRemote());
 
       if (Platform.isIOS) {
         Workmanager().registerTask(
-          BGTask.heartBeatBG.uniqueName,
-          BGTask.heartBeatBG.taskName,
+          BGTask.syncTODOs.uniqueName,
+          BGTask.syncTODOs.taskName,
         );
       }
+
+      runResult = true;
     }
 
     return Future.value(runResult);
@@ -74,7 +77,7 @@ Future<void> main() async {
   // TODO: remember to remove all tasks here since they will all be reassigned again
   Workmanager().initialize(
     callbackDispatcher,
-    isInDebugMode: !kReleaseMode,
+    isInDebugMode: true,
   );
 
   SystemChrome.setPreferredOrientations([

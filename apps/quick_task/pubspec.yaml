@@ -19,6 +19,7 @@ dependencies:
 
   connectivity_plus: ^4.0.1
   device_info_plus: ^10.1.2
+  permission_handler: ^11.3.1
 
   collection: ^1.18.0
 
