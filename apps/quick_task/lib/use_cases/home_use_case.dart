@@ -21,8 +21,8 @@ class HomeUseCase {
         List<Todo> localTodos = (localTodosResult as Right).value;
         List<Todo> remoteTodos = (remoteTodosResult as Right).value;
 
-        await TodoSyncHelper.syncRemoteWithLocal(localTodos, remoteTodos);
-        await TodoSyncHelper.addLocalTodosToRemote(localTodos, remoteTodos);
+        await sl<TodoSyncHelper>().syncRemoteWithLocal(localTodos, remoteTodos);
+        await sl<TodoSyncHelper>().addLocalTodosToRemote(localTodos, remoteTodos);
       }
 
       return const Right(null);

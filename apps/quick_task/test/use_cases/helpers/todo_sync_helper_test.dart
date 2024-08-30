@@ -42,7 +42,7 @@ void main() {
       final localTodos = [todo1];
       final remoteTodos = [todo2];
 
-      await TodoSyncHelper.syncRemoteWithLocal(localTodos, remoteTodos);
+      await TodoSyncHelper().syncRemoteWithLocal(localTodos, remoteTodos);
 
       verify(mockHomeRepo.deleteTODOToFirebase(todo: todo2)).called(1);
       verifyNever(mockHomeRepo.addTODOToFirebase(todo: anyNamed('todo')));
@@ -53,7 +53,7 @@ void main() {
       final localTodos = [modifiedTodo2];
       final remoteTodos = [todo2];
 
-      await TodoSyncHelper.syncRemoteWithLocal(localTodos, remoteTodos);
+      await TodoSyncHelper().syncRemoteWithLocal(localTodos, remoteTodos);
 
       verify(mockHomeRepo.addTODOToFirebase(todo: modifiedTodo2)).called(1);
       verifyNever(mockHomeRepo.deleteTODOToFirebase(todo: anyNamed('todo')));
@@ -63,7 +63,7 @@ void main() {
       final localTodos = [todo2];
       final remoteTodos = [todo2];
 
-      await TodoSyncHelper.syncRemoteWithLocal(localTodos, remoteTodos);
+      await TodoSyncHelper().syncRemoteWithLocal(localTodos, remoteTodos);
 
       verifyNever(mockHomeRepo.deleteTODOToFirebase(todo: anyNamed('todo')));
       verifyNever(mockHomeRepo.addTODOToFirebase(todo: anyNamed('todo')));
@@ -73,7 +73,7 @@ void main() {
       final localTodos = [todo1];
       final remoteTodos = [todo2];
 
-      await TodoSyncHelper.addLocalTodosToRemote(localTodos, remoteTodos);
+      await TodoSyncHelper().addLocalTodosToRemote(localTodos, remoteTodos);
 
       verify(mockHomeRepo.addTODOToFirebase(todo: todo1)).called(1);
     });
@@ -82,7 +82,7 @@ void main() {
       final localTodos = [todo2];
       final remoteTodos = [todo2];
 
-      await TodoSyncHelper.addLocalTodosToRemote(localTodos, remoteTodos);
+      await TodoSyncHelper().addLocalTodosToRemote(localTodos, remoteTodos);
 
       verifyNever(mockHomeRepo.addTODOToFirebase(todo: anyNamed('todo')));
     });
@@ -90,7 +90,7 @@ void main() {
     test('findMatchingTodoById returns correct Todo if found', () {
       final todos = [todo1, todo2];
 
-      final result = TodoSyncHelper.findMatchingTodoById(todos, '2');
+      final result = TodoSyncHelper().findMatchingTodoById(todos, '2');
 
       expect(result, equals(todo2));
     });
@@ -98,7 +98,7 @@ void main() {
     test('findMatchingTodoById returns null if Todo is not found', () {
       final todos = [todo1];
 
-      final result = TodoSyncHelper.findMatchingTodoById(todos, '2');
+      final result = TodoSyncHelper().findMatchingTodoById(todos, '2');
 
       expect(result, isNull);
     });
@@ -107,7 +107,7 @@ void main() {
       const localTodo = todo1;
       final remoteTodos = [todo1, todo2];
 
-      final result = TodoSyncHelper.isTodoInRemote(localTodo, remoteTodos);
+      final result = TodoSyncHelper().isTodoInRemote(localTodo, remoteTodos);
 
       expect(result, isTrue);
     });
@@ -116,7 +116,7 @@ void main() {
       const localTodo = todo1;
       final remoteTodos = [todo2];
 
-      final result = TodoSyncHelper.isTodoInRemote(localTodo, remoteTodos);
+      final result = TodoSyncHelper().isTodoInRemote(localTodo, remoteTodos);
 
       expect(result, isFalse);
     });

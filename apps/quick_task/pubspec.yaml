@@ -20,6 +20,8 @@ dependencies:
   connectivity_plus: ^4.0.1
   device_info_plus: ^10.1.2
 
+  collection: ^1.18.0
+
   firebase_cluster:
     path: ../../sdk/firebase_cluster
 
