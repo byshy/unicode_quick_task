@@ -6,6 +6,7 @@ import 'package:quick_task/features/home/widgets/todo_item.dart';
 import 'package:quick_task/generated/l10n.dart';
 import 'package:quick_task/models/todo.dart';
 
+import '../../../di/injection_container.dart';
 import '../bloc/home_bloc.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -22,7 +23,9 @@ class HomeScreen extends StatelessWidget {
             ),
             actions: [
               TextButton.icon(
-                onPressed: state.syncStatus.isSynced ? null : () {},
+                onPressed: state.syncStatus.isSynced ? null : () {
+                  sl<HomeBloc>().add(const SyncTODOsWithRemote());
+                },
                 label: Text(state.syncStatus.title()),
                 icon: Icon(state.syncStatus.isSynced ? Icons.cloud_done_rounded : Icons.cloud_upload),
               ),
