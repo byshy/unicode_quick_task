@@ -10,7 +10,7 @@ class Todo extends Equatable {
   const Todo({
     required this.id,
     required this.title,
-    required this.description,
+    this.description,
     this.completion = Completion.initial,
   });
 
