@@ -7,6 +7,10 @@ class CoreEvent extends Equatable {
   List<Object?> get props => [];
 }
 
+class CoreLanguageInitialized extends CoreEvent {
+  const CoreLanguageInitialized();
+}
+
 class CoreLanguageChanged extends CoreEvent {
   final String language;
 

@@ -8,7 +8,6 @@ import 'package:localization/enums/lang.dart';
 import 'package:quick_task/use_cases/core_use_case.dart';
 import 'package:unicode/unicode.dart';
 
-import '../../data/local_data_sources/local_data_source.dart';
 import '../../di/injection_container.dart';
 import '../../generated/l10n.dart';
 import '../models/failures/failure.dart';
@@ -25,21 +24,45 @@ class CoreBloc extends Bloc<CoreEvent, CoreState> {
       packageInfo = value;
     });
 
+    on<CoreLanguageInitialized>(_onCoreLanguageInitialized);
     on<CoreLanguageChanged>(_onLanguageChanged);
     on<DeviceIDFetched>(_onDeviceIDFetched);
 
+    add(const CoreLanguageInitialized());
     add(const DeviceIDFetched());
   }
 
+  Future<void> _onCoreLanguageInitialized(CoreLanguageInitialized event, Emitter<CoreState> emit) async {
+    Either<Failure, Lang> langResult = sl<CoreUseCase>().getLanguage();
+
+    await langResult.fold(
+      (failure) {},
+      (language) async {
+        await QuickTaskL10n.load(Locale(language.name));
+
+        emit(
+          state.copyWith(
+            lang: language.name,
+          ),
+        );
+      },
+    );
+  }
+
   Future<void> _onLanguageChanged(CoreLanguageChanged event, Emitter<CoreState> emit) async {
-    await getLanguage();
+    Either<Failure, Lang> langResult = sl<CoreUseCase>().getLanguage(lang: event.language);
 
-    sl<LocalDataSource>().setLanguage(event.language);
+    await langResult.fold(
+      (failure) {},
+      (language) async {
+        await QuickTaskL10n.load(Locale(language.name));
 
-    emit(
-      state.copyWith(
-        lang: event.language,
-      ),
+        emit(
+          state.copyWith(
+            lang: event.language,
+          ),
+        );
+      },
     );
   }
 
@@ -54,17 +77,6 @@ class CoreBloc extends Bloc<CoreEvent, CoreState> {
             deviceID: deviceID,
           ),
         );
-      },
-    );
-  }
-
-  Future<void> getLanguage() async {
-    Either<Failure, Lang> langResult = sl<CoreUseCase>().getLanguage();
-
-    await langResult.fold(
-      (failure) {},
-      (language) async {
-        await QuickTaskL10n.load(Locale(language.name));
       },
     );
   }

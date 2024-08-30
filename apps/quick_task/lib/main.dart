@@ -84,25 +84,10 @@ Future<void> main() async {
   runApp(const QuickTaskApp());
 }
 
-class QuickTaskApp extends StatefulWidget {
-  const QuickTaskApp({super.key});
-
-  @override
-  State<QuickTaskApp> createState() => _QuickTaskAppState();
-}
-
 final UnicodeNavigatorObserver routeObserver = UnicodeNavigatorObserver();
 
-class _QuickTaskAppState extends State<QuickTaskApp> {
-  @override
-  void initState() {
-    super.initState();
-
-    Future.delayed(
-      const Duration(milliseconds: 500),
-      () => sl<CoreBloc>().getLanguage().then((value) => setState(() {})),
-    );
-  }
+class QuickTaskApp extends StatelessWidget {
+  const QuickTaskApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -128,8 +113,6 @@ class _QuickTaskAppState extends State<QuickTaskApp> {
               l10n.GlobalCupertinoLocalizations.delegate,
             ],
             builder: (_, child) {
-              bool isLangRTL = l10n.Intl.getCurrentLocale() != 'en';
-
               Widget processedChild = child!;
 
               return GestureDetector(
@@ -138,10 +121,7 @@ class _QuickTaskAppState extends State<QuickTaskApp> {
                     SystemChannels.textInput.invokeMethod('TextInput.hide');
                   }
                 },
-                child: Directionality(
-                  textDirection: isLangRTL ? TextDirection.rtl : TextDirection.ltr,
-                  child: processedChild,
-                ),
+                child: processedChild,
               );
             },
             theme: ThemeData(
