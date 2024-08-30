@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:local_storage/local_storage.dart';
+import 'package:picasso/models/config.dart';
 import 'package:picasso/widgets/bottom_sheets/language_bottom_sheet.dart';
 import 'package:quick_task/core/bloc/core_bloc.dart';
 import 'package:quick_task/core/enums/config_names.dart';
@@ -29,10 +30,12 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
 
-    Workmanager().registerTask(
-      BGTask.syncTODOs.uniqueName,
-      BGTask.syncTODOs.taskName,
-    );
+    if (sl<Config>().workflow!.autoSync) {
+      Workmanager().registerTask(
+        BGTask.syncTODOs.uniqueName,
+        BGTask.syncTODOs.taskName,
+      );
+    }
   }
 
   @override
