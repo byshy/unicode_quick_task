@@ -2,7 +2,7 @@ import '../provider.dart';
 
 class BaseEvent {
   late String _name;
-  late Map<String, dynamic>? _params;
+  late Map<String, Object>? _params;
 
   List<MonitoringProvider>? monitoringProvider;
 
@@ -25,7 +25,7 @@ class BaseEvent {
 
   String get eventName => _name;
 
-  Map<String, dynamic>? get eventParams => _params;
+  Map<String, Object>? get eventParams => _params;
 
   @override
   String toString() {
