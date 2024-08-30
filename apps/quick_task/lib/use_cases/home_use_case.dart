@@ -12,16 +12,25 @@ class HomeUseCase {
     return await sl<HomeRepo>().getTODOsFromFirebase();
   }
 
-  Future<void> syncTODOsWithRemote() async {
-    Either<Failure, List<Todo>> localTodosResult = getTODOsFromLocal();
-    Either<Failure, List<Todo>> remoteTodosResult = await getTODOsFromFirebase();
+  Future<Either<Failure, void>> syncTODOsWithRemote() async {
+    try {
+      Either<Failure, List<Todo>> localTodosResult = getTODOsFromLocal();
+      Either<Failure, List<Todo>> remoteTodosResult = await getTODOsFromFirebase();
 
-    if (localTodosResult.isRight() && remoteTodosResult.isRight()) {
-      List<Todo> localTodos = (localTodosResult as Right).value;
-      List<Todo> remoteTodos = (remoteTodosResult as Right).value;
+      if (localTodosResult.isRight() && remoteTodosResult.isRight()) {
+        List<Todo> localTodos = (localTodosResult as Right).value;
+        List<Todo> remoteTodos = (remoteTodosResult as Right).value;
 
-      await TodoSyncHelper.syncRemoteWithLocal(localTodos, remoteTodos);
-      await TodoSyncHelper.addLocalTodosToRemote(localTodos, remoteTodos);
+        await TodoSyncHelper.syncRemoteWithLocal(localTodos, remoteTodos);
+        await TodoSyncHelper.addLocalTodosToRemote(localTodos, remoteTodos);
+      }
+
+      return const Right(null);
+    } catch (e) {
+      return Left(UnknownFailure(
+        messageData: 'Failed to sync data',
+        data: e,
+      ));
     }
   }
 
