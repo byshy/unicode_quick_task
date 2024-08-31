@@ -7,7 +7,7 @@ import 'package:quick_task/core/bloc/core_bloc.dart';
 import 'package:quick_task/core/enums/config_names.dart';
 import 'package:quick_task/core/enums/sync.dart';
 import 'package:quick_task/features/home/bottom_sheets/todo_bottom_sheet.dart';
-import 'package:quick_task/features/home/widgets/todo_item.dart';
+import 'package:quick_task/features/home/widgets/todo_item_slidable.dart';
 import 'package:quick_task/generated/l10n.dart';
 import 'package:quick_task/models/todo.dart';
 import 'package:route_navigator/route_navigator.dart';
@@ -50,17 +50,17 @@ class _HomeScreenState extends State<HomeScreen> {
             return Scaffold(
               appBar: AppBar(
                 leading: IconButton(
-                  onPressed: () =>
-                      showLanguageBottomSheet(
-                          selectedLanguage: sl<UnicodeStorage>().getString(BaseConfigs.lang) ?? '',
-                          onLanguageChange: (value) {
-                            sl<CoreBloc>().add(
-                              CoreLanguageChanged(
-                                language: value,
-                              ),
-                            );
-                            sl<RouteNavigator>().pop();
-                          }),
+                  onPressed: () => showLanguageBottomSheet(
+                    selectedLanguage: sl<UnicodeStorage>().getString(BaseConfigs.lang) ?? '',
+                    onLanguageChange: (value) {
+                      sl<CoreBloc>().add(
+                        CoreLanguageChanged(
+                          language: value,
+                        ),
+                      );
+                      sl<RouteNavigator>().pop();
+                    },
+                  ),
                   icon: const Icon(Icons.translate),
                 ),
                 title: Text(
@@ -71,8 +71,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     onPressed: state.syncStatus.isSynced
                         ? null
                         : () {
-                      sl<HomeBloc>().add(const SyncTODOsWithRemote());
-                    },
+                            sl<HomeBloc>().add(const SyncTODOsWithRemote());
+                          },
                     label: Text(state.syncStatus.title()),
                     icon: Icon(state.syncStatus.isSynced ? Icons.cloud_done_rounded : Icons.cloud_upload),
                   ),
@@ -83,7 +83,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 itemBuilder: (_, index) {
                   final Todo todo = state.todosList[index];
 
-                  return TodoItem(
+                  return TodoItemSlidable(
+                    index: index,
                     todo: todo,
                   );
                 },

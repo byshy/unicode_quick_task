@@ -30,12 +30,19 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   }
 
   Future<void> _onFirstTimeTODOLoaded(FirstTimeTODOLoaded event, Emitter<HomeState> emit) async {
+    emit(state.copyWith(baseStatus: BaseStatus.loading));
+
     Either<Failure, List<Todo>> result = await sl<HomeUseCase>().getTODOsFromFirebase();
 
-    result.fold(
-      (failure) {},
-      (newTodosList) {
-        emit(state.copyWith(todosList: newTodosList));
+    await result.fold(
+      (failure) {
+        emit(state.copyWith(baseStatus: BaseStatus.failure));
+      },
+      (newTodosList) async {
+        await _postSuccessTODOLoad(
+          emit,
+          todos: newTodosList,
+        );
       },
     );
   }
@@ -44,15 +51,35 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     await sl<HomeUseCase>().syncTODOsWithRemote();
   }
 
-  void _onTODOLoaded(TODOLoaded event, Emitter<HomeState> emit) {
+  Future<void> _onTODOLoaded(TODOLoaded event, Emitter<HomeState> emit) async {
+    emit(state.copyWith(baseStatus: BaseStatus.loading));
+
     Either<Failure, List<Todo>> result = sl<HomeUseCase>().getTODOsFromLocal();
 
-    result.fold(
-      (failure) {},
-      (newTodosList) {
-        emit(state.copyWith(todosList: newTodosList));
+    await result.fold(
+      (failure) {
+        emit(state.copyWith(baseStatus: BaseStatus.failure));
+      },
+      (newTodosList) async {
+        await _postSuccessTODOLoad(
+          emit,
+          todos: newTodosList,
+        );
       },
     );
+  }
+
+  Future<void> _postSuccessTODOLoad(Emitter<HomeState> emit, {required List<Todo> todos}) async {
+    emit(state.copyWith(
+      baseStatus: BaseStatus.success,
+      todosList: todos,
+    ));
+
+    await Future.delayed(const Duration(milliseconds: 400));
+
+    emit(state.copyWith(
+      firstRenderDone: true,
+    ));
   }
 
   Future<void> _onTODOAdded(TODOAdded event, Emitter<HomeState> emit) async {
