@@ -1,6 +1,7 @@
 import 'dart:math' as math;
 import 'dart:ui';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:picasso/models/config.dart';
 import 'package:quick_task/core/enums/completion.dart';
@@ -88,6 +89,7 @@ class _TodoItemState extends State<TodoItem> with TickerProviderStateMixin {
   @override
   void dispose() {
     _cardController.dispose();
+    _checkBoxController.dispose();
     super.dispose();
   }
 
@@ -158,9 +160,11 @@ class _TodoItemState extends State<TodoItem> with TickerProviderStateMixin {
                       },
                     ),
                     const Positioned.fill(
-                      child: CurvedCorners(
-                        radius: 15,
-                        color: Colors.white,
+                      child: IgnorePointer(
+                        child: CurvedCorners(
+                          radius: 15,
+                          color: Colors.white,
+                        ),
                       ),
                     ),
                   ],

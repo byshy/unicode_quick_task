@@ -21,7 +21,6 @@ class TodoItemSlidable extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Slidable(
-      key: Key('todo_item_slidable_${todo.id}'),
       endActionPane: ActionPane(
         extentRatio: 0.25,
         motion: const ScrollMotion(),

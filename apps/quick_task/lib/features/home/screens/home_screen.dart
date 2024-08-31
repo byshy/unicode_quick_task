@@ -84,6 +84,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   final Todo todo = state.todosList[index];
 
                   return TodoItemSlidable(
+                    key: ValueKey('todo_item_slidable_$index'),
                     index: index,
                     todo: todo,
                   );
