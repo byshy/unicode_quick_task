@@ -38,7 +38,7 @@ The project structure is organized to facilitate easy management and scalability
 
 #### Prerequisites
 - Flutter SDK (the app was developed using v3.22.2)
-- Run the setup script found in the script directory, please check the README.md file there for how to run it and what it does.
+- Run the setup script found in the script directory, please check the [README.md](scripts/README.md) file there for how to run it and what it does.
 
 #### Installation
 1. Clone the repository.
