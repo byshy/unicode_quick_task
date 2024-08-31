@@ -1,8 +1,8 @@
 {
   "domain": "regular",
   "theme": {
-    "customer_color": "#6C8B87",
-    "customer_color_light": "#90B2AE",
-    "accent_color": "#E8BF8B"
+    "customer_color": "#C59469",
+    "customer_color_light": "#E8BF8B",
+    "accent_color": "#6C8B87"
   }
 }
