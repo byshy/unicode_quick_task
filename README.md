@@ -37,7 +37,7 @@ The project structure is organized to facilitate easy management and scalability
 
 ### Testing
 
-The project is thoroughly tested using both unit tests and integration tests. The commands required to run the integration tests are provided in the [README.md](apps/quick_task/test/integration/README.md) file located inside the `test/integration` directory.
+The project is thoroughly tested using both unit tests and integration tests. The commands required to run the integration tests are provided in the [README.md](apps/quick_task/integration_test/README.md) file located inside the `test/integration` directory.
 
 ### Getting Started
 
