@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:local_storage/local_storage.dart';
 import 'package:picasso/exports.dart';
 import 'package:picasso/models/config.dart';
+import 'package:picasso/utils/gradients.dart';
 import 'package:picasso/widgets/bottom_sheets/language_bottom_sheet.dart';
 import 'package:quick_task/core/bloc/core_bloc.dart';
 import 'package:quick_task/core/enums/config_names.dart';
@@ -29,6 +30,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  static const double nextButtonSize = 50.0;
+
   @override
   void initState() {
     super.initState();
@@ -118,9 +121,31 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ],
               ),
-              floatingActionButton: const FloatingActionButton(
-                onPressed: showTodoBottomSheet,
-                child: Icon(Icons.add),
+              floatingActionButton: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Hero(
+                    tag: 'next_to_fab',
+                    child: Container(
+                      height: nextButtonSize,
+                      width: nextButtonSize,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        gradient: LinearGradient(
+                          colors: Gradients.customer,
+                        ),
+                      ),
+                      child: IconButton(
+                        onPressed: showTodoBottomSheet,
+                        icon: Icon(
+                          Icons.add,
+                          color: sl<Config>().theme!.white,
+                        ),
+                        iconSize: 17,
+                      ),
+                    ),
+                  ),
+                ],
               ),
             );
           },

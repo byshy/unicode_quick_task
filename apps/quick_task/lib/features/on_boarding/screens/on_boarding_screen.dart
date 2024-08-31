@@ -86,25 +86,28 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> with TickerProvider
                         },
                       ),
                     ),
-                    Container(
-                      height: nextButtonSize,
-                      width: nextButtonSize,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        gradient: LinearGradient(
-                          colors: Gradients.customer,
+                    Hero(
+                      tag: 'next_to_fab',
+                      child: Container(
+                        height: nextButtonSize,
+                        width: nextButtonSize,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          gradient: LinearGradient(
+                            colors: Gradients.customer,
+                          ),
                         ),
-                      ),
-                      child: IconButton(
-                        key: const ValueKey('on_boarding_next_button'),
-                        onPressed: () => sl<OnBoardingBloc>().add(GoToNextPage(
-                          pagesLength: onBoardingData.length,
-                        )),
-                        icon: Icon(
-                          Icons.arrow_forward_ios,
-                          color: sl<Config>().theme!.white,
+                        child: IconButton(
+                          key: const ValueKey('on_boarding_next_button'),
+                          onPressed: () => sl<OnBoardingBloc>().add(GoToNextPage(
+                            pagesLength: onBoardingData.length,
+                          )),
+                          icon: Icon(
+                            Icons.arrow_forward_ios,
+                            color: sl<Config>().theme!.white,
+                          ),
+                          iconSize: 17,
                         ),
-                        iconSize: 17,
                       ),
                     )
                   ],
