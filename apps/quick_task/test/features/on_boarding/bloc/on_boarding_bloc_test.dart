@@ -6,6 +6,7 @@ import 'package:mockito/mockito.dart';
 import 'package:needle/needle.dart';
 import 'package:picasso/models/config.dart';
 import 'package:quick_task/data/local_data_sources/local_data_source.dart';
+import 'package:quick_task/features/home/bloc/home_bloc.dart';
 import 'package:quick_task/features/on_boarding/bloc/on_boarding_bloc.dart';
 import 'package:quick_task/utils/routing/screens.dart';
 import 'package:route_navigator/route_navigator.dart';
@@ -17,6 +18,7 @@ import 'on_boarding_bloc_test.mocks.dart';
   LocalDataSource,
   RouteNavigator,
   TabController,
+  HomeBloc,
 ])
 void main() {
   group(
@@ -29,6 +31,7 @@ void main() {
       late MockLocalDataSource mockLocalDataSource;
       late MockRouteNavigator mockRouteNavigator;
       late MockTabController mockTabController;
+      late MockHomeBloc mockHomeBloc;
 
       setUp(() {
         onBoardingBloc = OnBoardingBloc();
@@ -36,6 +39,7 @@ void main() {
         mockLocalDataSource = MockLocalDataSource();
         mockRouteNavigator = MockRouteNavigator();
         mockTabController = MockTabController();
+        mockHomeBloc = MockHomeBloc();
 
         onBoardingBloc.onBoardingTabsController = mockTabController;
 
@@ -53,6 +57,10 @@ void main() {
 
         if (!instance.isRegistered<RouteNavigator>()) {
           instance.registerSingleton<RouteNavigator>(mockRouteNavigator);
+        }
+
+        if (!instance.isRegistered<HomeBloc>()) {
+          instance.registerSingleton<HomeBloc>(mockHomeBloc);
         }
 
         when(mockTabController.length).thenReturn(3);

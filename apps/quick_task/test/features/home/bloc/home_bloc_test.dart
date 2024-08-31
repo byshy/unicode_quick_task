@@ -4,6 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:needle/needle.dart';
+import 'package:quick_task/core/enums/base_status.dart';
 import 'package:quick_task/core/enums/completion.dart';
 import 'package:quick_task/core/models/failures/failure.dart';
 import 'package:quick_task/features/home/bloc/home_bloc.dart';
@@ -56,7 +57,7 @@ void main() {
     test("Init state is correct.", () {
       expect(
         instance<HomeBloc>().state,
-        const HomeState(),
+        const HomeState(baseStatus: BaseStatus.success),
       );
     });
 
@@ -68,7 +69,14 @@ void main() {
       },
       act: (bloc) => bloc.add(const TODOLoaded()),
       expect: () => [
-        HomeState(todosList: todos),
+        const HomeState(
+          baseStatus: BaseStatus.loading,
+          todosList: [],
+        ),
+        HomeState(
+          baseStatus: BaseStatus.success,
+          todosList: todos,
+        ),
       ],
     );
 
@@ -79,7 +87,16 @@ void main() {
         return homeBloc;
       },
       act: (bloc) => bloc.add(const TODOLoaded()),
-      expect: () => [],
+      expect: () => [
+        const HomeState(
+          baseStatus: BaseStatus.loading,
+          todosList: [],
+        ),
+        const HomeState(
+          baseStatus: BaseStatus.failure,
+          todosList: [],
+        ),
+      ],
     );
 
     blocTest<HomeBloc, HomeState>(
@@ -94,7 +111,10 @@ void main() {
       },
       act: (bloc) => bloc.add(TODOAdded(todo: todos.first)),
       expect: () => [
-        HomeState(todosList: todos),
+        HomeState(
+          baseStatus: BaseStatus.success,
+          todosList: todos,
+        ),
       ],
       verify: (_) {
         verify(mockHomeUseCase.resetTODOFields()).called(1);
@@ -113,7 +133,10 @@ void main() {
       },
       act: (bloc) => bloc.add(TODOUpdated(todo: todos.first)),
       expect: () => [
-        HomeState(todosList: todos),
+        HomeState(
+          baseStatus: BaseStatus.success,
+          todosList: todos,
+        ),
       ],
       verify: (_) {
         verify(mockHomeUseCase.resetTODOFields()).called(1);
@@ -132,7 +155,10 @@ void main() {
       },
       act: (bloc) => bloc.add(TODODeleted(todo: todos.first)),
       expect: () => [
-        HomeState(todosList: todos),
+        HomeState(
+          baseStatus: BaseStatus.success,
+          todosList: todos,
+        ),
       ],
     );
 
@@ -157,7 +183,14 @@ void main() {
       },
       act: (bloc) => bloc.add(const FirstTimeTODOLoaded()),
       expect: () => [
-        HomeState(todosList: todos),
+        const HomeState(
+          baseStatus: BaseStatus.loading,
+          todosList: [],
+        ),
+        HomeState(
+          baseStatus: BaseStatus.success,
+          todosList: todos,
+        ),
       ],
     );
 
@@ -169,7 +202,16 @@ void main() {
         return homeBloc;
       },
       act: (bloc) => bloc.add(const FirstTimeTODOLoaded()),
-      expect: () => [],
+      expect: () => [
+        const HomeState(
+          baseStatus: BaseStatus.loading,
+          todosList: [],
+        ),
+        const HomeState(
+          baseStatus: BaseStatus.failure,
+          todosList: [],
+        )
+      ],
     );
   });
 }
