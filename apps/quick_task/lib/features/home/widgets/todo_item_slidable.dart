@@ -26,6 +26,7 @@ class TodoItemSlidable extends StatelessWidget {
         motion: const ScrollMotion(),
         children: [
           SlidableAction(
+            key: const ValueKey('todo_deletion_button'),
             onPressed: (_) => sl<HomeBloc>().add(TODODeleted(todo: todo)),
             backgroundColor: sl<Config>().theme!.white,
             foregroundColor: sl<Config>().theme!.red,

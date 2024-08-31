@@ -34,6 +34,7 @@ Future<void> showTodoBottomSheet({Todo? todo}) async {
             ),
             const SizedBox(height: 8),
             PicassoTextFormField(
+              key: const ValueKey('todo_title_field'),
               autofocus: true,
               controller: sl<HomeBloc>().todoTitleController,
               contentPadding: const EdgeInsets.symmetric(horizontal: 10),
@@ -55,6 +56,7 @@ Future<void> showTodoBottomSheet({Todo? todo}) async {
             ),
             const SizedBox(height: 8),
             PicassoTextField(
+              key: const ValueKey('todo_description_field'),
               controller: sl<HomeBloc>().todoDescriptionController,
               title: '${QuickTaskL10n.current.description} (${QuickTaskL10n.current.optional})',
               hint: '${QuickTaskL10n.current.description} (${QuickTaskL10n.current.optional})',
@@ -62,6 +64,7 @@ Future<void> showTodoBottomSheet({Todo? todo}) async {
             ),
             const SizedBox(height: 8),
             PicassoButton(
+              key: const ValueKey('add_todo_button'),
               onPressed: () async {
                 if (!sl<HomeBloc>().todoAdditionFormKey.currentState!.validate()) return;
 

@@ -136,6 +136,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       ),
                       child: IconButton(
+                        key: const ValueKey('add_todo_fab'),
                         onPressed: showTodoBottomSheet,
                         icon: Icon(
                           Icons.add,
