@@ -1,6 +1,9 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:local_storage/local_storage.dart';
+import 'package:picasso/exports.dart';
 import 'package:picasso/models/config.dart';
 import 'package:picasso/widgets/bottom_sheets/language_bottom_sheet.dart';
 import 'package:quick_task/core/bloc/core_bloc.dart';
@@ -78,18 +81,42 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ],
               ),
-              body: ListView.separated(
-                itemCount: state.todosList.length,
-                itemBuilder: (_, index) {
-                  final Todo todo = state.todosList[index];
+              body: Stack(
+                children: [
+                  ListView.separated(
+                    itemCount: state.todosList.length,
+                    itemBuilder: (_, index) {
+                      final Todo todo = state.todosList[index];
 
-                  return TodoItemSlidable(
-                    key: ValueKey('todo_item_slidable_$index'),
-                    index: index,
-                    todo: todo,
-                  );
-                },
-                separatorBuilder: (_, index) => const SizedBox(height: 8),
+                      return TodoItemSlidable(
+                        key: ValueKey('todo_item_slidable_$index'),
+                        index: index,
+                        todo: todo,
+                      );
+                    },
+                    separatorBuilder: (_, index) => const SizedBox(height: 8),
+                  ),
+                  Align(
+                    alignment: Alignment.bottomCenter,
+                    child: confettiCannon(angle: 1.4 * pi),
+                  ),
+                  Align(
+                    alignment: Alignment.bottomCenter,
+                    child: confettiCannon(angle: 1.45 * pi),
+                  ),
+                  Align(
+                    alignment: Alignment.bottomCenter,
+                    child: confettiCannon(angle: - pi / 2),
+                  ),
+                  Align(
+                    alignment: Alignment.bottomCenter,
+                    child: confettiCannon(angle: pi - (1.45 * pi)),
+                  ),
+                  Align(
+                    alignment: Alignment.bottomCenter,
+                    child: confettiCannon(angle: pi - (1.4 * pi)),
+                  ),
+                ],
               ),
               floatingActionButton: const FloatingActionButton(
                 onPressed: showTodoBottomSheet,
@@ -99,6 +126,20 @@ class _HomeScreenState extends State<HomeScreen> {
           },
         );
       },
+    );
+  }
+
+  Widget confettiCannon({required double angle}) {
+    return ConfettiWidget(
+      confettiController: sl<HomeBloc>().controllerCenter,
+      blastDirection: angle,
+      emissionFrequency: 0.5,
+      numberOfParticles: 1,
+      maxBlastForce: 100,
+      minBlastForce: 80,
+      minimumSize: const Size(10, 10),
+      maximumSize: const Size(50, 50),
+      gravity: 0.1,
     );
   }
 }

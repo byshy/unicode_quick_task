@@ -2,6 +2,7 @@ import 'dart:math' as math;
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:picasso/exports.dart';
 import 'package:picasso/models/config.dart';
 import 'package:quick_task/core/enums/completion.dart';
 import 'package:quick_task/features/home/bloc/home_bloc.dart';
@@ -132,6 +133,15 @@ class _TodoItemState extends State<TodoItem> with TickerProviderStateMixin {
                   shape: const CircleBorder(),
                   onChanged: (value) {
                     Todo newTODO = widget.todo.copyWith(completion: value! ? Completion.done : Completion.initial);
+
+                    if (sl<HomeBloc>().controllerCenter.state == ConfettiControllerState.playing) {
+                      sl<HomeBloc>().controllerCenter.stop();
+                    }
+
+                    if (newTODO.completion.isDone) {
+                      sl<HomeBloc>().controllerCenter.play();
+                    }
+
                     sl<HomeBloc>().add(
                       TODOUpdated(
                         todo: newTODO,

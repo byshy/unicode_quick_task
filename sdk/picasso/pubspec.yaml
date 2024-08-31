@@ -17,6 +17,8 @@ dependencies:
   extended_image: ^8.1.0
   image: ^4.0.17
 
+  confetti: ^0.7.0
+
   flutter_slidable: ^3.1.1
 
   keyboard_actions: ^4.1.0

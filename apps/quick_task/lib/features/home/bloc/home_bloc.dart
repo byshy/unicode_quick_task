@@ -2,6 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:picasso/exports.dart';
 import 'package:quick_task/core/enums/sync.dart';
 import 'package:quick_task/di/injection_container.dart';
 import 'package:quick_task/models/todo.dart';
@@ -15,6 +16,10 @@ part 'home_event.dart';
 part 'home_state.dart';
 
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
+  final ConfettiController controllerCenter = ConfettiController(
+    duration: const Duration(seconds: 1),
+  );
+
   final TextEditingController todoTitleController = TextEditingController();
   final TextEditingController todoDescriptionController = TextEditingController();
 
