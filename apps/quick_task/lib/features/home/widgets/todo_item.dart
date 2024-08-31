@@ -4,6 +4,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:picasso/exports.dart';
 import 'package:picasso/models/config.dart';
+import 'package:picasso/models/text_styles.dart';
 import 'package:quick_task/core/enums/completion.dart';
 import 'package:quick_task/features/home/bloc/home_bloc.dart';
 import 'package:quick_task/features/home/bottom_sheets/todo_bottom_sheet.dart';
@@ -95,6 +96,8 @@ class _TodoItemState extends State<TodoItem> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    bool isTodoCompleted = widget.todo.completion.isDone;
+
     return AnimatedBuilder(
       animation: _cardAnimation,
       builder: (_, child) {
@@ -110,7 +113,7 @@ class _TodoItemState extends State<TodoItem> with TickerProviderStateMixin {
       },
       child: AnimatedContainer(
         duration: const Duration(milliseconds: animationDurationMS ~/ 3),
-        color: widget.todo.completion.isDone ? sl<Config>().theme!.green : sl<Config>().theme!.grey,
+        color: isTodoCompleted ? sl<Config>().theme!.green : sl<Config>().theme!.grey,
         child: IntrinsicHeight(
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -129,7 +132,14 @@ class _TodoItemState extends State<TodoItem> with TickerProviderStateMixin {
                   );
                 },
                 child: Checkbox(
-                  value: widget.todo.completion.isDone,
+                  value: isTodoCompleted,
+                  fillColor: WidgetStateProperty.resolveWith<Color>((Set<WidgetState> states) {
+                    if (states.contains(WidgetState.selected)) {
+                      return sl<Config>().theme!.green;
+                    }
+
+                    return Colors.transparent;
+                  }),
                   shape: const CircleBorder(),
                   onChanged: (value) {
                     Todo newTODO = widget.todo.copyWith(completion: value! ? Completion.done : Completion.initial);
@@ -154,11 +164,19 @@ class _TodoItemState extends State<TodoItem> with TickerProviderStateMixin {
                 child: Stack(
                   children: [
                     ListTile(
-                      title: Text(widget.todo.title),
+                      title: Text(
+                        widget.todo.title,
+                        style: HeadingStyle.subtitleBold.copyWith(
+                          color: isTodoCompleted ? sl<Config>().theme!.white : sl<Config>().theme!.black,
+                        ),
+                      ),
                       subtitle: widget.todo.hasDescription
                           ? Text(
                               widget.todo.description!,
                               maxLines: 2,
+                              style: BodyStyle.body1Normal.copyWith(
+                                color: isTodoCompleted ? sl<Config>().theme!.white : sl<Config>().theme!.black,
+                              ),
                             )
                           : null,
                       onTap: () async {

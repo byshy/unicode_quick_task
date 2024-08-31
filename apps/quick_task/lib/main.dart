@@ -130,6 +130,8 @@ class QuickTaskApp extends StatelessWidget {
             theme: ThemeData(
               scaffoldBackgroundColor: sl<Config>().theme!.white,
               primarySwatch: createMaterialColor(sl<Config>().theme!.customerColor),
+              primaryColor: sl<Config>().theme!.customerColor,
+              colorScheme: ColorScheme.fromSeed(seedColor: sl<Config>().theme!.customerColor),
               fontFamily: Fonts.cairo,
               appBarTheme: AppBarTheme(
                 elevation: 0,
