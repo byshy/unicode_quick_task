@@ -97,7 +97,7 @@ class BodyStyle {
   );
 }
 
-class ButtonStyle {
+class PicassoButtonStyle {
   static TextStyle buttonBold = TextStyle(
     fontSize: 14,
     fontWeight: FontWeight.bold,

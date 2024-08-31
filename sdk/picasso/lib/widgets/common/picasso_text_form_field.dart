@@ -6,6 +6,7 @@ import 'package:route_navigator/route_navigator.dart';
 import '../../di/injection_container.dart';
 
 class PicassoTextFormField extends StatelessWidget {
+  final bool autofocus;
   final TextStyle? style;
   final FocusNode? focusNode;
   final Widget? bottom;
@@ -42,6 +43,7 @@ class PicassoTextFormField extends StatelessWidget {
 
   const PicassoTextFormField({
     Key? key,
+    this.autofocus = false,
     this.style,
     this.focusNode,
     this.autoValidateMode,
@@ -93,6 +95,7 @@ class PicassoTextFormField extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         TextFormField(
+          autofocus: autofocus,
           enabled: enabledTextField ?? true,
           controller: controller,
           autovalidateMode: autoValidateMode,

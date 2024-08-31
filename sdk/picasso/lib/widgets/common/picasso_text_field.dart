@@ -118,6 +118,7 @@ class PicassoTextField extends StatelessWidget {
               onTap: onTap,
               textAlignVertical: textAlignVertical,
               decoration: InputDecoration(
+                labelText: title,
                 border: InputBorder.none,
                 contentPadding: contentPadding ??
                     const EdgeInsets.symmetric(

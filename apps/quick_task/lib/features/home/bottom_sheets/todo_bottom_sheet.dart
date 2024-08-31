@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:picasso/models/config.dart';
 import 'package:picasso/models/text_styles.dart';
 import 'package:picasso/widgets/bottom_sheets/flat_bottom_sheet/show_flat_bottom_sheet.dart';
 import 'package:picasso/widgets/common/picasso_button.dart';
 import 'package:picasso/widgets/common/picasso_text_field.dart';
+import 'package:picasso/widgets/common/picasso_text_form_field.dart';
 import 'package:quick_task/features/home/bloc/home_bloc.dart';
 import 'package:quick_task/generated/l10n.dart';
 import 'package:quick_task/models/todo.dart';
@@ -21,61 +23,83 @@ Future<void> showTodoBottomSheet({Todo? todo}) async {
   await showFlatBottomSheet(
     child: SafeArea(
       minimum: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Text(
-            isNewTODO ? QuickTaskL10n.current.add_todo : QuickTaskL10n.current.edit_todo,
-            style: HeadingStyle.titleNormal,
-          ),
-          const SizedBox(height: 8),
-          PicassoTextField(
-            autofocus: true,
-            controller: sl<HomeBloc>().todoTitleController,
-            title: QuickTaskL10n.current.title,
-            hint: QuickTaskL10n.current.title,
-          ),
-          const SizedBox(height: 8),
-          PicassoTextField(
-            controller: sl<HomeBloc>().todoDescriptionController,
-            title: QuickTaskL10n.current.description,
-            hint: QuickTaskL10n.current.description,
-            maxLines: null,
-          ),
-          const SizedBox(height: 8),
-          PicassoButton(
-            onPressed: () async {
-              await sl<RouteNavigator>().pop();
-
-              String title = sl<HomeBloc>().todoTitleController.text;
-              String description = sl<HomeBloc>().todoDescriptionController.text;
-
-              if (isNewTODO) {
-                sl<HomeBloc>().add(
-                  TODOAdded(
-                    todo: Todo(
-                      id: '${DateTime.now().millisecondsSinceEpoch}',
-                      title: title,
-                      description: description,
-                    ),
-                  ),
-                );
-              } else {
-                sl<HomeBloc>().add(
-                  TODOUpdated(
-                    todo: todo.copyWith(
-                      title: title,
-                      description: description,
-                    ),
-                  ),
-                );
-              }
-            },
-            child: Text(
-              isNewTODO ? QuickTaskL10n.current.add : QuickTaskL10n.current.edit,
+      child: Form(
+        key: sl<HomeBloc>().todoAdditionFormKey,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Text(
+              isNewTODO ? QuickTaskL10n.current.add_todo : QuickTaskL10n.current.edit_todo,
+              style: HeadingStyle.titleNormal,
             ),
-          ),
-        ],
+            const SizedBox(height: 8),
+            PicassoTextFormField(
+              autofocus: true,
+              controller: sl<HomeBloc>().todoTitleController,
+              contentPadding: const EdgeInsets.symmetric(horizontal: 10),
+              validator: (title) {
+                if (title?.trim().isEmpty ?? true) {
+                  return QuickTaskL10n.current.required_field;
+                }
+
+                return null;
+              },
+              decoration: InputDecoration(
+                filled: true,
+                fillColor: sl<Config>().theme!.grey,
+                border: InputBorder.none,
+                contentPadding: const EdgeInsets.symmetric(horizontal: 10),
+                labelText: QuickTaskL10n.current.title,
+                hintText: QuickTaskL10n.current.title,
+              ),
+            ),
+            const SizedBox(height: 8),
+            PicassoTextField(
+              controller: sl<HomeBloc>().todoDescriptionController,
+              title: '${QuickTaskL10n.current.description} (${QuickTaskL10n.current.optional})',
+              hint: '${QuickTaskL10n.current.description} (${QuickTaskL10n.current.optional})',
+              maxLines: null,
+            ),
+            const SizedBox(height: 8),
+            PicassoButton(
+              onPressed: () async {
+                if (!sl<HomeBloc>().todoAdditionFormKey.currentState!.validate()) return;
+
+                await sl<RouteNavigator>().pop();
+
+                String title = sl<HomeBloc>().todoTitleController.text;
+                String description = sl<HomeBloc>().todoDescriptionController.text;
+
+                if (isNewTODO) {
+                  sl<HomeBloc>().add(
+                    TODOAdded(
+                      todo: Todo(
+                        id: '${DateTime.now().millisecondsSinceEpoch}',
+                        title: title,
+                        description: description,
+                      ),
+                    ),
+                  );
+                } else {
+                  sl<HomeBloc>().add(
+                    TODOUpdated(
+                      todo: todo.copyWith(
+                        title: title,
+                        description: description,
+                      ),
+                    ),
+                  );
+                }
+              },
+              child: Text(
+                isNewTODO ? QuickTaskL10n.current.add : QuickTaskL10n.current.edit,
+                style: PicassoButtonStyle.buttonNormal.copyWith(
+                  color: sl<Config>().theme!.white,
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     ),
   );

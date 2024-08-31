@@ -16,6 +16,8 @@ part 'home_event.dart';
 part 'home_state.dart';
 
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
+  final GlobalKey<FormState> todoAdditionFormKey = GlobalKey<FormState>();
+
   final ConfettiController controllerCenter = ConfettiController(
     duration: const Duration(seconds: 1),
   );
