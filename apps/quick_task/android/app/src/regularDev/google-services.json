@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "558930248623",
+    "project_id": "quick-task-regular---dev",
+    "storage_bucket": "quick-task-regular---dev.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:558930248623:android:249174a33b81ec9555255a",
+        "android_client_info": {
+          "package_name": "com.unicode.quick_task.regular.dev"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDi_VCrdiTm3xCDmx8ivad1YLz1OSE6pxU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
