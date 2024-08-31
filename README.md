@@ -13,12 +13,12 @@ QuickTask is a Flutter project designed to simulate the challenges of managing m
 
 ### Client Differences
 
-| Feature  | PRO Client | Regular Client |
-|---|---|---|
-| App Icon | Green themed | Orange themed |
-| Onboarding | 4 screens for comprehensive introduction | 3 screens for simpler introduction |
-| Task Synchronization | Syncs with remote server every 6 hours (SLA requirement) | No remote server synchronization |
-| Environment Setup | Separate development and production environments (dedicated Firebase projects) | Separate development and production environments (dedicated Firebase projects) |
+| Feature  | PRO Client | Regular Client                                                                                                                           |
+|---|---|------------------------------------------------------------------------------------------------------------------------------------------|
+| App Icon | ![PRO Client Icon](https://github.com/byshy/unicode_quick_task/blob/main/apps/quick_task/android/app/src/pro/play_store_512.png)| ![Regular Client Icon](https://github.com/byshy/unicode_quick_task/blob/main/apps/quick_task/android/app/src/regular/play_store_512.png) |
+| Onboarding | 4 screens for comprehensive introduction | 3 screens for simpler introduction                                                                                                       |
+| Task Synchronization | Syncs with remote server every 6 hours (SLA requirement) | No remote server synchronization                                                                                                         |
+| Environment Setup | Separate development and production environments (dedicated Firebase projects) | Separate development and production environments (dedicated Firebase projects)                                                           |
 
 ### Project Structure
 
