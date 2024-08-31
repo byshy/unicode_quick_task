@@ -1,7 +1,6 @@
 import 'dart:math' as math;
 import 'dart:ui';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:picasso/models/config.dart';
 import 'package:quick_task/core/enums/completion.dart';
@@ -145,7 +144,6 @@ class _TodoItemState extends State<TodoItem> with TickerProviderStateMixin {
                 child: Stack(
                   children: [
                     ListTile(
-                      key: Key('todo_item_${widget.todo.id}'),
                       title: Text(widget.todo.title),
                       subtitle: widget.todo.hasDescription
                           ? Text(
