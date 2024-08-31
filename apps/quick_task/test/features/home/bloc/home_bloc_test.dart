@@ -83,7 +83,7 @@ void main() {
     blocTest<HomeBloc, HomeState>(
       'emits nothing when TODOLoaded fails',
       build: () {
-        when(mockHomeUseCase.getTODOsFromLocal()).thenReturn(Left(UnknownFailure()));
+        when(mockHomeUseCase.getTODOsFromLocal()).thenReturn(const Left(UnknownFailure()));
         return homeBloc;
       },
       act: (bloc) => bloc.add(const TODOLoaded()),
@@ -197,7 +197,7 @@ void main() {
     blocTest<HomeBloc, HomeState>(
       'emits nothing when FirstTimeTODOLoaded fails',
       build: () {
-        when(mockHomeUseCase.getTODOsFromFirebase()).thenAnswer((_) async => Left(UnknownFailure()));
+        when(mockHomeUseCase.getTODOsFromFirebase()).thenAnswer((_) async => const Left(UnknownFailure()));
 
         return homeBloc;
       },
