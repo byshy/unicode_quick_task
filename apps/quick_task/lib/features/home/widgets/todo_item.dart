@@ -1,4 +1,4 @@
-import 'dart:math';
+import 'dart:math' as math;
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -26,74 +26,111 @@ class TodoItem extends StatefulWidget {
   State<TodoItem> createState() => _TodoItemState();
 }
 
-class _TodoItemState extends State<TodoItem> with SingleTickerProviderStateMixin {
+class _TodoItemState extends State<TodoItem> with TickerProviderStateMixin {
   static const int animationDurationMS = 600;
 
-  late AnimationController _controller;
-  late Animation<double> _animation;
+  late AnimationController _cardController;
+  late Animation<double> _cardAnimation;
+
+  late AnimationController _checkBoxController;
+  late Animation<double> _checkBoxAnimation;
 
   @override
   void initState() {
     super.initState();
 
-    _controller = AnimationController(
+    _cardController = AnimationController(
       duration: const Duration(milliseconds: animationDurationMS),
       vsync: this,
     );
 
-    _animation = Tween<double>(
-      begin: pi / 2,
+    _cardAnimation = Tween<double>(
+      begin: math.pi / 2,
       end: 0.0,
     ).animate(CurvedAnimation(
-      parent: _controller,
+      parent: _cardController,
+      curve: Curves.easeInOut,
+    ));
+
+    _checkBoxController = AnimationController(
+      duration: const Duration(milliseconds: animationDurationMS ~/ 2),
+      vsync: this,
+    );
+
+    _checkBoxAnimation = Tween<double>(
+      begin: 0.0,
+      end: 1.0,
+    ).animate(CurvedAnimation(
+      parent: _checkBoxController,
       curve: Curves.easeInOut,
     ));
 
     bool shouldWait = !sl<HomeBloc>().state.firstRenderDone;
     int totalTodosCount = sl<HomeBloc>().state.todosList.length;
 
+    int waitingTime = (animationDurationMS / 2 * math.pow(0.8, (totalTodosCount - widget.index - 1))).toInt();
+
     Future.delayed(
-      Duration(milliseconds: shouldWait ? (animationDurationMS / 2 * pow(0.8, (totalTodosCount - widget.index - 1))).toInt() : 0),
+      Duration(milliseconds: shouldWait ? waitingTime : 0),
       () {
-        _controller.forward();
+        _cardController.forward();
+      },
+    );
+
+    Future.delayed(
+      const Duration(milliseconds: animationDurationMS),
+      () {
+        _checkBoxController.forward();
       },
     );
   }
 
   @override
   void dispose() {
-    _controller.dispose();
+    _cardController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return AnimatedBuilder(
-      animation: _animation,
+      animation: _cardAnimation,
       builder: (_, child) {
         return Transform(
           transform: Matrix4.identity()
             ..setEntry(3, 2, 0.001)
-            ..rotateY(_animation.value),
+            ..rotateY(_cardAnimation.value),
           child: Opacity(
-            opacity: clampDouble(1 - _animation.value, 0, 1),
+            opacity: clampDouble(1 - _cardAnimation.value, 0, 1),
             child: child,
           ),
         );
       },
-      child: Container(
-        color: sl<Config>().theme!.grey,
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: animationDurationMS ~/ 3),
+        color: widget.todo.completion.isDone ? sl<Config>().theme!.green : sl<Config>().theme!.grey,
         child: IntrinsicHeight(
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Container(
-                color: sl<Config>().theme!.white,
+              AnimatedBuilder(
+                animation: _checkBoxAnimation,
+                builder: (_, child) {
+                  return AnimatedContainer(
+                    color: sl<Config>().theme!.white,
+                    width: _checkBoxAnimation.value == 0 ? 10 : 48,
+                    duration: const Duration(milliseconds: animationDurationMS ~/ 2),
+                    child: Opacity(
+                      opacity: _checkBoxAnimation.value,
+                      child: child,
+                    ),
+                  );
+                },
                 child: Checkbox(
                   value: widget.todo.completion.isDone,
+                  shape: const CircleBorder(),
                   onChanged: (value) {
                     Todo newTODO = widget.todo.copyWith(completion: value! ? Completion.done : Completion.initial);
-
                     sl<HomeBloc>().add(
                       TODOUpdated(
                         todo: newTODO,

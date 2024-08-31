@@ -30,6 +30,7 @@ Future<void> showTodoBottomSheet({Todo? todo}) async {
           ),
           const SizedBox(height: 8),
           PicassoTextField(
+            autofocus: true,
             controller: sl<HomeBloc>().todoTitleController,
             title: QuickTaskL10n.current.title,
             hint: QuickTaskL10n.current.title,

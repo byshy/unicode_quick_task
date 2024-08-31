@@ -9,6 +9,7 @@ class PicassoTextField extends StatelessWidget {
   final String title;
   final TextStyle? titleStyle;
   final FocusNode? focusNode;
+  final bool autofocus;
   final String hint;
   final Widget? bottom;
   final TextEditingController? controller;
@@ -45,6 +46,7 @@ class PicassoTextField extends StatelessWidget {
       fontSize: 16,
     ),
     this.focusNode,
+    this.autofocus = false,
     required this.hint,
     this.bottom,
     this.controller,
@@ -106,6 +108,7 @@ class PicassoTextField extends StatelessWidget {
               enabled: enabledTextField ?? true,
               controller: controller,
               focusNode: focusNode,
+              autofocus: autofocus,
               onEditingComplete: onEditingComplete,
               textInputAction: textInputAction,
               maxLines: maxLines,
