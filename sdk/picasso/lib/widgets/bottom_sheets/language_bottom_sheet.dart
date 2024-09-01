@@ -14,33 +14,35 @@ void showLanguageBottomSheet({
       Icons.translate,
       size: 30,
     ),
-    child: (_) => Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        RadioListTile<String>(
-          activeColor: activeColor,
-          title: const Text('العربية'),
-          value: 'ar',
-          groupValue: selectedLanguage,
-          onChanged: (value) {
-            onLanguageChange!(value ?? '');
-          },
-        ),
-        const SizedBox(
-          height: 10,
-        ),
-        RadioListTile<String>(
-          activeColor: activeColor,
-          title: const Text('English'),
-          value: 'en',
-          groupValue: selectedLanguage,
-          onChanged: (value) {
-            onLanguageChange!(value ?? '');
-          },
-        ),
-      ],
+    child: (_) => SafeArea(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          RadioListTile<String>(
+            activeColor: activeColor,
+            title: const Text('العربية'),
+            value: 'ar',
+            groupValue: selectedLanguage,
+            onChanged: (value) {
+              onLanguageChange!(value ?? '');
+            },
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          RadioListTile<String>(
+            activeColor: activeColor,
+            title: const Text('English'),
+            value: 'en',
+            groupValue: selectedLanguage,
+            onChanged: (value) {
+              onLanguageChange!(value ?? '');
+            },
+          ),
+        ],
+      ),
     ),
   );
 }
